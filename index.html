@@ -12,16 +12,24 @@
 </head>
 <body>
     <div class="container">
+        <button id="toggle-theme" class="theme-toggle">🌙 Dark Mode</button>
+        <div id="loader" class="loader" style="display:none;"></div>
         <div class="search">
             <input id="city" type="text" placeholder="Enter city name" spellcheck="false">
             <button id="btn">
                 <i class="fa fa-search"></i>
             </button>
         </div>
+        <div class="unit-toggle">
+            <button id="toggle-unit">Show °F</button>
+        </div>
+        <ul id="history" class="history"></ul>
         <div class="weather">
             <img src="img/sun3.png" alt="" class="weather-icon">
             <h1 class="temp"></h1>
             <h2 class="city">Goa</h2>
+            <img src="img/humidity.png" alt="" class="weather-icon">
+            <h2 class="humidity"></h2> <!-- Changed from <p> to <h2> -->
         </div>
     </div>
     <script src="script.js"></script>
