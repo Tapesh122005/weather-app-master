@@ -27,7 +27,6 @@ body{
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
 }
-/* SEARCH BAR */
 .search{
     width: 100%;
     display: flex;
@@ -64,9 +63,6 @@ body{
 }.search button i{
     font-size: 20px;
 }
-/* ENDSEARCH BAR */
-
-/* MAIN CONTENT */
 .weather-icon{
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
@@ -84,7 +80,6 @@ body{
     font-weight: 600;
     margin-top: -10px;
 }
-
 .details{
     
     display: flex;
@@ -102,4 +97,3 @@ body{
     width: 40px;
     margin-right: 10px;
 }
-/* END MAIN CONTENT */
