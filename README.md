@@ -22,19 +22,36 @@ This Weather App allows users to search for current weather conditions in any ci
 
 ---
 
-## 📁 File Structure
+## 📁 File Structure (Detailed)
 
 ```
 weather-app-master/
 │
-├── index.html         # Main HTML file
-├── style.css          # App styling
-├── script.js          # App logic
-├── img/               # Weather icons and images
-│   ├── sun3.png
-│   └── humidity.png
-└── README.md          # Project documentation
+├── index.html         # The main HTML file that structures the app's user interface.
+├── style.css          # All the styles and themes for the app, including dark/light mode and responsiveness.
+├── script.js          # Main JavaScript file containing all app logic: fetching weather, handling UI, toggling units, theme, and history.
+├── img/               # Folder containing image assets used in the app.
+│   ├── sun3.png       # Weather icon for sunny conditions.
+│   └── humidity.png   # Icon representing humidity.
+└── README.md          # Project documentation (this file).
 ```
+
+- **index.html:**  
+  The entry point of the app. It links the CSS and JS files, and contains the structure for search, weather display, history, loader, and theme toggle.
+
+- **style.css:**  
+  Contains all the styling rules for the app, including layout, colors, gradients, button styles, loader animation, and both dark and light mode themes.
+
+- **script.js:**  
+  Handles all interactive features: fetching weather data from OpenWeatherMap, updating the DOM, managing search history, toggling between Celsius/Fahrenheit, switching themes, and showing/hiding the loader.
+
+- **img/**  
+  Stores image assets used in the app, such as weather icons and humidity indicators.
+
+- **README.md:**  
+  Documentation for the project, including introduction, features, setup instructions, and license.
+
+You can copy and use this section to make
 
 ---
 
@@ -42,7 +59,7 @@ weather-app-master/
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/weather-app-master.git
+   git clone https://github.com/Tapesh122005/weather-app-master.git
    ```
 
 2. **Navigate to the project folder:**
