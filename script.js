@@ -7,14 +7,14 @@ const historyList = document.getElementById("history");
 const loader = document.getElementById("loader");
 
 async function checkWeather(city = 'Goa'){
-    loader.style.display = "block"; // Show loader
-    document.querySelector(".weather").style.display = "none"; // Hide weather info
+    loader.style.display = "block"; 
+    document.querySelector(".weather").style.display = "none"; 
 
     try {
         const res = await fetch(URL + city + `&appid=${APIKEY}&units=metric`);
         let data = await res.json();
         document.querySelector(".city").innerHTML = data.name;
-        lastTempC = data.main.temp; // Always store in Celsius
+        lastTempC = data.main.temp; 
 
         let displayTemp;
         let tempUnit;
@@ -22,18 +22,16 @@ async function checkWeather(city = 'Goa'){
             displayTemp = Math.floor(lastTempC);
             tempUnit = "°C";
         } else {
-            displayTemp = Math.floor((lastTempC * 9/5) + 32); // Convert to Fahrenheit
+            displayTemp = Math.floor((lastTempC * 9/5) + 32); 
             tempUnit = "°F";
         }
         document.querySelector(".temp").innerHTML = displayTemp + tempUnit;
         document.querySelector(".humidity").innerHTML = "Humidity: " + data.main.humidity + "%";
         saveToHistory(data.name);
-
-        // Show weather info after loader delay
         setTimeout(() => {
             loader.style.display = "none";
             document.querySelector(".weather").style.display = "block";
-        }, 800); // 2000ms = 2 seconds
+        }, 800);
     } catch (e) {
         setTimeout(() => {
             loader.style.display = "none";
@@ -42,7 +40,7 @@ async function checkWeather(city = 'Goa'){
     }
 }
 
-let currentUnit = "metric"; // "metric" for Celsius, "imperial" for Fahrenheit
+let currentUnit = "metric";
 
 const toggleBtn = document.getElementById("toggle-unit");
 
@@ -57,14 +55,14 @@ toggleBtn.addEventListener("click", () => {
     checkWeather(searchBox.value || "Goa");
 });
 
-let lastTempC = null; // Store last temperature in Celsius
+let lastTempC = null;
 
 function saveToHistory(city) {
     let history = JSON.parse(localStorage.getItem("weatherHistory")) || [];
     city = city.trim();
     if (city && !history.includes(city)) {
         history.unshift(city);
-        if (history.length > 5) history.pop(); // Keep only last 5
+        if (history.length > 5) history.pop(); 
         localStorage.setItem("weatherHistory", JSON.stringify(history));
         renderHistory();
     }
@@ -114,7 +112,6 @@ themeBtn.addEventListener("click", () => {
     }
 });
 
-// On page load, set theme from localStorage
 setTheme(localStorage.getItem("theme") === "light" ? "light" : "dark");
 
 renderHistory();

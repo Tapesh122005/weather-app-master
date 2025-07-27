@@ -144,7 +144,6 @@ body{
     100% { transform: rotate(360deg);}
 }
 
-/* Light mode (white and yellow background) */
 body.light-mode {
     background-image: linear-gradient(135deg, #fff82b , #fffbe7  80%);
 }
@@ -166,7 +165,6 @@ body.light-mode #toggle-unit:hover {
     background: #e3e3e3;
 }
 
-/* Theme toggle button */
 .theme-toggle {
     position: absolute;
     top: 20px;
