@@ -182,3 +182,9 @@ body.light-mode #toggle-unit:hover {
 .theme-toggle:hover {
     background: #d1e7e0;
 }
+.humidity-icon {
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 7px;
+    border-radius: 25px;
+}
