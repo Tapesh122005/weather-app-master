@@ -188,3 +188,36 @@ body.light-mode #toggle-unit:hover {
     margin-bottom: 7px;
     border-radius: 25px;
 }
+.forecast {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    overflow-x: auto;
+}
+.forecast-day {
+    background: #ebfffc;
+    border-radius: 12px;
+    padding: 10px 8px;
+    min-width: 90px;
+    text-align: center;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.forecast-day img {
+    width: 40px;
+    margin-bottom: 5px;
+}
+.forecast-day .day {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+.forecast-day .temp {
+    font-size: 18px;
+}
+.aqi {
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}

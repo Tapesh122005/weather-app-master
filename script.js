@@ -31,19 +31,55 @@ function getWeatherIcon(iconCode) {
 }
 
 function getTempIcon(tempC) {
-    if (tempC >= 40) return "img/sun3.png";            // Very hot, clear day
-    if (tempC >= 35) return "img/moon.png";            // Hot, clear night
-    if (tempC >= 30) return "img/cloudy-day.png";      // Warm, few clouds day
-    if (tempC >= 25) return "img/cloudy-night.png";    // Few clouds night
-    if (tempC >= 20) return "img/cloud.png";           // Scattered clouds
-    if (tempC >= 15) return "img/clouds.png";          // Broken clouds
-    if (tempC >= 10) return "img/rain.png";            // Shower rain
-    if (tempC >= 5)  return "img/rainy-day.png";       // Rain day
-    if (tempC >= 0)  return "img/rainy-night.png";     // Rain night
-    if (tempC >= -5) return "img/thunder.png";         // Thunderstorm
-    if (tempC >= -10) return "img/snow.png";           // Snow
-    if (tempC >= -20) return "img/mist.png";           // Mist
-    return "img/sun3.png";                             // Default/fallback
+    if (tempC >= 40) return "img/sun3.png";          
+    if (tempC >= 35) return "img/moon.png";            
+    if (tempC >= 30) return "img/cloudy-day.png";      
+    if (tempC >= 25) return "img/cloudy-night.png";    
+    if (tempC >= 20) return "img/cloud.png";          
+    if (tempC >= 15) return "img/clouds.png";          
+    if (tempC >= 10) return "img/rain.png";            
+    if (tempC >= 5)  return "img/rainy-day.png";       
+    if (tempC >= 0)  return "img/rainy-night.png";     
+    if (tempC >= -5) return "img/thunder.png";         
+    if (tempC >= -10) return "img/snow.png";          
+    if (tempC >= -20) return "img/mist.png";           
+    return "img/sun3.png";                             
+}
+
+async function get5DayForecast(city) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${APIKEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const days = {};
+    data.list.forEach(item => {
+        const date = new Date(item.dt * 1000).toLocaleDateString();
+        if (!days[date]) days[date] = [];
+        days[date].push(item);
+    });
+    const forecastArr = Object.values(days).slice(0, 5).map(dayArr => {
+        let noon = dayArr.reduce((prev, curr) => {
+            return Math.abs(new Date(curr.dt_txt).getHours() - 12) < Math.abs(new Date(prev.dt_txt).getHours() - 12) ? curr : prev;
+        });
+        return noon;
+    });
+    return forecastArr;
+}
+
+function renderForecast(forecastArr) {
+    const forecastDiv = document.getElementById('forecast');
+    forecastDiv.innerHTML = '';
+    forecastArr.forEach(day => {
+        const icon = getWeatherIcon(day.weather[0].icon);
+        const dayName = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+        const temp = Math.round(day.main.temp);
+        forecastDiv.innerHTML += `
+            <div class="forecast-day">
+                <div class="day">${dayName}</div>
+                <img src="${icon}" alt="">
+                <div class="temp">${temp}°C</div>
+            </div>
+        `;
+    });
 }
 
 async function checkWeather(city = 'Goa'){
@@ -56,7 +92,6 @@ async function checkWeather(city = 'Goa'){
         document.querySelector(".city").innerHTML = data.name;
         lastTempC = data.main.temp; 
 
-        // Set weather icon based on temperature only
         document.querySelector(".weather-icon").src = getTempIcon(lastTempC);
 
         let displayTemp;
@@ -71,6 +106,18 @@ async function checkWeather(city = 'Goa'){
         document.querySelector(".temp").innerHTML = displayTemp + tempUnit;
         document.querySelector(".humidity").innerHTML = "Humidity: " + data.main.humidity + "%";
         saveToHistory(data.name);
+
+        if (data.coord) {
+            const aqi = await getAQI(data.coord.lat, data.coord.lon);
+            const aqiText = aqi ? `Air Quality: ${getAQIDescription(aqi)} (AQI ${aqi})` : "Air Quality: N/A";
+            document.getElementById("aqi").textContent = aqiText;
+        } else {
+            document.getElementById("aqi").textContent = "Air Quality: N/A";
+        }
+
+        const forecastArr = await get5DayForecast(city);
+        renderForecast(forecastArr);
+
         setTimeout(() => {
             loader.style.display = "none";
             document.querySelector(".weather").style.display = "block";
@@ -159,3 +206,24 @@ setTheme(localStorage.getItem("theme") === "light" ? "light" : "dark");
 
 renderHistory();
 checkWeather()
+
+async function getAQI(lat, lon) {
+    const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${APIKEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data && data.list && data.list.length > 0) {
+        return data.list[0].main.aqi;
+    }
+    return null;
+}
+
+function getAQIDescription(aqi) {
+    switch (aqi) {
+        case 1: return "Good";
+        case 2: return "Fair";
+        case 3: return "Moderate";
+        case 4: return "Poor";
+        case 5: return "Very Poor";
+        default: return "Unknown";
+    }
+}
